@@ -38,13 +38,14 @@ def drive_service():
     from google.auth.transport.requests import Request
     from googleapiclient.discovery import build
 
-    scopes = ["https://www.googleapis.com/auth/drive.readonly"]
+    # Scope nepředáváme – použijí se ty, na které byl token vydán
+    # (jinak Google při refreshi vrátí invalid_scope). Čteme jen, nezapisujeme.
     token_json = os.getenv("GOOGLE_TOKEN_JSON")
     if token_json:
         info = json.loads(token_json)
-        creds = Credentials.from_authorized_user_info(info, scopes)
+        creds = Credentials.from_authorized_user_info(info)
     elif os.path.exists("token.json"):
-        creds = Credentials.from_authorized_user_file("token.json", scopes)
+        creds = Credentials.from_authorized_user_file("token.json")
     else:
         sys.exit("Chybí GOOGLE_TOKEN_JSON nebo token.json.")
     if creds.expired and creds.refresh_token:
