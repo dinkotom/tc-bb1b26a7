@@ -291,7 +291,7 @@ def build_index():
                             f'<span class="cnt">{len(fotky)}</span></div>')
                 blok.append('<div class="grid">')
                 for rel in fotky:
-                    cap = html.escape(f"{lok} · {_popisek(rel)}")
+                    cap = html.escape(f"{lok} · {cesky_datum(den)} {den[:4]} · {_popisek(rel)}")
                     blok.append(
                         f'<a href="{html.escape(rel)}" data-cap="{cap}">'
                         f'<img loading="lazy" src="{html.escape(rel)}" alt="{cap}">'
