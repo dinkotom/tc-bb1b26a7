@@ -211,7 +211,8 @@ PAGE = """<!DOCTYPE html>
     align-items:center; justify-content:center; padding:20px; cursor:zoom-out;}
   #lb.on{display:flex;}
   #lb img{max-width:100%; max-height:92vh; border-radius:8px; box-shadow:0 20px 60px rgba(0,0,0,.6); cursor:default;}
-  #lb .cap{position:fixed; bottom:14px; left:0; right:0; text-align:center; color:#cfd8cb; font-size:.74rem;}
+  #lb .cap{position:fixed; top:18px; left:0; right:0; padding:0 58px; text-align:center;
+    color:#e9eee7; font-size:.8rem; font-weight:600;}
   #lb .nav{position:fixed; top:50%; transform:translateY(-50%); cursor:pointer; padding:0;
     width:48px; height:48px; border-radius:50%; font-size:1.9rem; line-height:1;
     background:rgba(255,255,255,.08); color:#fff; border:1px solid rgba(255,255,255,.18);
