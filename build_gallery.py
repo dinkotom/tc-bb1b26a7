@@ -242,11 +242,11 @@ PAGE = """<!DOCTYPE html>
 
 
 def _popisek(rel):
-    """Z názvu souboru '2025-12-12 03:15 Nová.jpg' vytáhne čas, jinak název."""
+    """Z názvu souboru 'YYYY-MM-DD HH:MM Lokalita.jpg' vytáhne čas (HH:MM)."""
     base = os.path.splitext(os.path.basename(rel))[0]
     import re
-    m = re.search(r"(\d{1,2}[:_-]\d{2})", base)
-    return m.group(1).replace("_", ":").replace("-", ":") if m else base
+    m = re.search(r"\b([01]?\d|2[0-3]):([0-5]\d)\b", base)   # jen reálný čas, ne datum
+    return f"{m.group(1)}:{m.group(2)}" if m else base
 
 
 def build_index():
