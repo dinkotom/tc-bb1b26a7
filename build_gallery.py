@@ -218,6 +218,7 @@ PAGE = """<!DOCTYPE html>
     display:flex; align-items:center; justify-content:center; transition:background .2s;}
   #lb .nav:hover{background:rgba(255,255,255,.22);}
   #lb .prev{left:14px;} #lb .next{right:14px;}
+  #lb .close{top:14px; right:14px; transform:none; font-size:1.5rem;}
   @media (max-width:520px){ #lb .nav{width:40px; height:40px; font-size:1.5rem;} }
   @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important;}}
 </style>
@@ -233,6 +234,7 @@ PAGE = """<!DOCTYPE html>
   <footer><a href="https://dinkotom.github.io/domov-60de93c6/">← Doma</a> · zdroj: Google Drive · obnova á 15 min</footer>
 </div>
 <div id="lb">
+  <button class="nav close" aria-label="Zavřít (Esc)">×</button>
   <button class="nav prev" aria-label="Předchozí (←)">‹</button>
   <img alt="">
   <button class="nav next" aria-label="Další (→)">›</button>
@@ -251,6 +253,7 @@ PAGE = """<!DOCTYPE html>
   function closeLb(){ lb.classList.remove('on'); }
   links.forEach(function(a,i){ a.addEventListener('click', function(e){ e.preventDefault(); show(i); }); });
   lb.addEventListener('click', function(e){ if(e.target===lb) closeLb(); });   // klik na pozadí zavře
+  lb.querySelector('.close').addEventListener('click', function(e){ e.stopPropagation(); closeLb(); });
   lb.querySelector('.prev').addEventListener('click', function(e){ e.stopPropagation(); show(idx-1); });
   lb.querySelector('.next').addEventListener('click', function(e){ e.stopPropagation(); show(idx+1); });
   document.addEventListener('keydown', function(e){
