@@ -162,7 +162,7 @@ PAGE = """<!DOCTYPE html>
 <meta name="robots" content="noindex, nofollow">
 <meta http-equiv="refresh" content="900">
 <meta name="theme-color" content="#0e120f">
-<title>Fotopasti</title>
+<title>Fotopasti – Tošanovice</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,500..700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -189,8 +189,8 @@ PAGE = """<!DOCTYPE html>
   .day .iso{font-size:.72rem; color:var(--muted);}
 
   .loc{margin:16px 0 6px; display:flex; align-items:center; gap:9px;}
-  .loc .name{font-size:.82rem; font-weight:600; color:var(--moss); letter-spacing:.02em;}
-  .loc .cnt{font-size:.7rem; color:var(--muted);}
+  .loc .name{font-size:1.15rem; font-weight:600; color:var(--moss); letter-spacing:.01em;}
+  .loc .cnt{font-size:.72rem; color:var(--muted);}
   .loc::after{content:""; flex:1; height:1px; background:var(--line);}
 
   .grid{display:grid; gap:8px; grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
@@ -210,31 +210,55 @@ PAGE = """<!DOCTYPE html>
   #lb{position:fixed; inset:0; z-index:50; background:rgba(8,10,8,.94); display:none;
     align-items:center; justify-content:center; padding:20px; cursor:zoom-out;}
   #lb.on{display:flex;}
-  #lb img{max-width:100%; max-height:92vh; border-radius:8px; box-shadow:0 20px 60px rgba(0,0,0,.6);}
+  #lb img{max-width:100%; max-height:92vh; border-radius:8px; box-shadow:0 20px 60px rgba(0,0,0,.6); cursor:default;}
   #lb .cap{position:fixed; bottom:14px; left:0; right:0; text-align:center; color:#cfd8cb; font-size:.74rem;}
+  #lb .nav{position:fixed; top:50%; transform:translateY(-50%); cursor:pointer; padding:0;
+    width:48px; height:48px; border-radius:50%; font-size:1.9rem; line-height:1;
+    background:rgba(255,255,255,.08); color:#fff; border:1px solid rgba(255,255,255,.18);
+    display:flex; align-items:center; justify-content:center; transition:background .2s;}
+  #lb .nav:hover{background:rgba(255,255,255,.22);}
+  #lb .prev{left:14px;} #lb .next{right:14px;}
+  @media (max-width:520px){ #lb .nav{width:40px; height:40px; font-size:1.5rem;} }
   @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important;}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="kicker">Fotopasti · posledních __DNI__ dní</div>
-    <h1>Z lesa<span class="d">.</span></h1>
+    <div class="kicker">Posledních __DNI__ dní</div>
+    <h1>Fotopasti<span class="d"> – Tošanovice</span></h1>
     <div class="sub">Aktualizováno __CAS__</div>
   </header>
   __TELO__
   <footer><a href="https://dinkotom.github.io/domov-60de93c6/">← Doma</a> · zdroj: Google Drive · obnova á 15 min</footer>
 </div>
-<div id="lb" onclick="this.classList.remove('on')"><img alt=""><div class="cap"></div></div>
+<div id="lb">
+  <button class="nav prev" aria-label="Předchozí (←)">‹</button>
+  <img alt="">
+  <button class="nav next" aria-label="Další (→)">›</button>
+  <div class="cap"></div>
+</div>
 <script>
   var lb=document.getElementById('lb'), lbimg=lb.querySelector('img'), cap=lb.querySelector('.cap');
-  document.querySelectorAll('.grid a').forEach(function(a){
-    a.addEventListener('click', function(e){
-      e.preventDefault();
-      lbimg.src=a.getAttribute('href'); cap.textContent=a.dataset.cap||''; lb.classList.add('on');
-    });
+  var links=[].slice.call(document.querySelectorAll('.grid a')), idx=-1;
+  function show(i){
+    if(!links.length) return;
+    idx=(i+links.length)%links.length;
+    var a=links[idx];
+    lbimg.src=a.getAttribute('href'); cap.textContent=a.dataset.cap||'';
+    lb.classList.add('on');
+  }
+  function closeLb(){ lb.classList.remove('on'); }
+  links.forEach(function(a,i){ a.addEventListener('click', function(e){ e.preventDefault(); show(i); }); });
+  lb.addEventListener('click', function(e){ if(e.target===lb) closeLb(); });   // klik na pozadí zavře
+  lb.querySelector('.prev').addEventListener('click', function(e){ e.stopPropagation(); show(idx-1); });
+  lb.querySelector('.next').addEventListener('click', function(e){ e.stopPropagation(); show(idx+1); });
+  document.addEventListener('keydown', function(e){
+    if(!lb.classList.contains('on')) return;
+    if(e.key==='Escape') closeLb();
+    else if(e.key==='ArrowRight') show(idx+1);
+    else if(e.key==='ArrowLeft') show(idx-1);
   });
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape') lb.classList.remove('on'); });
 </script>
 </body>
 </html>
